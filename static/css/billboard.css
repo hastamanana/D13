@@ -1,0 +1,15 @@
+.ad-detail__media {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-around;
+  align-items: center;
+  width: 75%;
+  margin: auto;
+}
+
+.ad-detail__media img,
+.ad-detail__media video {
+  max-height: 15rem;
+  border-radius: 10px;
+}

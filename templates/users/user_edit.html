@@ -1,0 +1,15 @@
+{% extends 'default.html' %}
+
+{% block title %}
+  Редактирование профиля
+{% endblock title %}
+
+{% block content %}
+  <h1>Редактирование профиля</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form }}
+    <br>
+    <input type="submit" value="Сохранить">
+  </form>
+{% endblock content %}

@@ -1,0 +1,80 @@
+{% extends 'default.html' %}
+
+{% load static %}
+
+{% block title %}
+  Мои объявления
+{% endblock title %}
+
+{% block content %}
+  <div>
+    {% for ad in ads %}
+      <div>
+        <a href="{% url 'ad_detail' ad.id %}">
+          <h2>{{ ad.title }}</h2>
+        </a>
+
+        <h6>
+          Автор: {{ ad.author }}
+          {% if ad.author == request.user %}
+            (Это Вы)
+          {% endif %}
+        </h6>
+        <h7>Дата: {{ ad.posted }}</h7>
+        <br>
+        <h7>Категория объявления: {{ ad.get_category_display }}</h7>
+        <p>- - -</p>
+        <h4>{{ ad.content | truncatewords:50 }}</h4>
+        <br>  
+        
+        <div>
+          {% if ad.image1 or ad.image2 or ad.image3 %}
+            <img src="{% static 'img/photo.png' %}" alt="" width=15 height=15>
+          {% endif %}
+          {% if ad.video %}
+            <img src="{% static 'img/video.png' %}" alt="" width=15 height=15>
+          {% endif %}
+        </div>
+
+          {% if ad.author == request.user %}
+            <div>
+              <p>- - -</p>
+              <button> <a href="{% url 'ad_edit' ad.id %}">Редактировать объявление</a> </button> 
+              <br><br>
+              <button> <a href="{% url 'ad_delete' ad.id %}">Удалить объявление</a> </button> 
+            </div>
+          {% endif %}
+          <br>  
+      </div>
+      <hr>
+    {% empty %}
+      <h2>Объявлений еще нет!</h2>
+    {% endfor %}
+
+  </div>
+ 
+
+  {% if is_paginated %}
+      <nav>
+        <ul class="pagination">
+          {% if page_obj.has_previous %}
+            <li><a href="?page=1">First</a></li>
+            <li><a href="?page={{ page_obj.previous_page_number }}"><<<</a></li>
+          {% endif %}
+
+          {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+              <li class="pagination_active">{{ num }}</li>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:3 %}
+              <li><a href="?page={{ num }}">{{ num }}</a></li>
+            {% endif %}
+          {% endfor %}
+
+          {% if page_obj.has_next %}
+            <li><a href="?page={{ page_obj.next_page_number }}">>>></a></li>
+            <li><a href="?page={{ page_obj.paginator.num_pages }}">Last</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+    {% endif %}
+{% endblock content %}

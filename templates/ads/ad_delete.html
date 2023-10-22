@@ -1,0 +1,22 @@
+{% extends 'default.html' %}
+
+{% block title %}
+  Удаение объявления
+{% endblock title %}
+
+{% block content %}
+  <br> 
+  <h2>Вы уверены, что хотите удалить объявление?</h2>
+  <br> 
+  <p>- - -</p>
+  <h4>{{ ad.title }}</h4>
+  <h6>Автор: {{ ad.author }}</h6>
+  <h6>Дата: {{ ad.posted }}</h6>
+  <h5>{{ ad.content }}</h5>
+  <p>- - -</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <input type="submit" value="Удалить">
+  </form>
+{% endblock content %}

@@ -1,0 +1,31 @@
+{% extends 'default.html' %}
+
+{% block title %}
+  Новое объявление
+{% endblock title %}
+
+{% block content %}
+  <h1>Создание нового объявления:</h1>
+  <form method="post" enctype="multipart/form-data">  
+    {% csrf_token %}
+
+    {% for hidden in form.hidden_fields %}
+      {{ hidden }}
+    {% endfor %}
+
+    {% for field in form.visible_fields %}
+      {{ field.errors }}
+      {{ field.label_tag }}
+
+      {% if field.label == 'Image1' or field.label == 'Image2' or field.label == 'Image3' or field.label == 'Video' %}
+        <div>
+          {{ field }}
+        </div>
+      {% else %}
+        {{ field }}        
+      {% endif %}
+    {% endfor %}  
+    <br>
+    <input type="submit" value="Добавить объявление">
+  </form>
+{% endblock content %}

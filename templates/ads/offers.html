@@ -1,0 +1,44 @@
+{% extends 'default.html' %}
+{% load static %}
+
+{% block title %}
+  Мои отклики
+{% endblock title %}
+
+{% block content %}
+<h1>Мои отклики:</h1>
+  <form method="GET">
+    {{ filter.form }}
+    <input type="submit" value="Поиск отклика">
+  </form>
+  <ul style="list-style-type:none;">
+    {% for offer in filter.qs %}
+      <li {% if offer.is_accepted %} style="background-color:lightgreen;"{% endif %}>
+        <div>
+          <h5>
+            <span>
+              {{ offer.user }} оставил отклик к объявлению: 
+              <a href="{{ offer.ad.get_absolute_url }}">{{offer.ad.title | truncatechars:50 }}</a>
+            </span>
+            <br> <br> 
+            {{ offer.text }}
+          </h5>
+
+        </div>
+        <br>
+        <a href="{% url 'offer_accept' offer.pk %}">
+          {% if not offer.is_accepted %}
+            <input type="submit" value="Принять отклик">
+          {% else %}
+            <input type="submit" value="Отменить отклик">
+          {% endif %}
+        </a>
+
+        <form action="{% url 'offer_delete' offer.pk %}" method="post">
+          {% csrf_token %}
+          <button> Удалить объявление </button> 
+        </form>
+      </li><hr>
+    {% endfor %}
+  </ul>
+{% endblock content %}
